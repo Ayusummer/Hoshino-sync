@@ -23,7 +23,7 @@ subr_dic = {
     Service('pcr-twitter', enable_on_default=True, help_='日服Twitter转发', bundle='pcr订阅'): ['priconne_redive', 'priconne_anime'],
     Service('pripri-twitter', enable_on_default=False, visible=False): ['pripri_anime'],
     Service('coffee-favorite-twitter', manage_priv=priv.SUPERUSER,
-            enable_on_default=False, visible=False): ['shiratamacaron', 'k_yuizaki', 'suzukitoto0323'],
+            enable_on_default=False, visible=False): ['shiratamacaron', 'k_yuizaki', 'suzukitoto0323', 'watanohara2'],
 }
 
 latest_info = {}      # { account: {last_tweet_id: int, profile_image: str } }
@@ -31,7 +31,7 @@ for _, ids in subr_dic.items():     # initialize
     for account in ids:
         latest_info[account] = {'last_tweet_id': 0, 'profile_image': '', 'media_only': False}
 
-for account in ('shiratamacaron', 'k_yuizaki', 'suzukitoto0323'):
+for account in ('shiratamacaron', 'k_yuizaki', 'suzukitoto0323', 'watanohara2'):
     latest_info[account]['media_only'] = True
 
 
@@ -127,9 +127,7 @@ async def twitter_poller():
         twts = []
         for account in subr_list:
             twts.extend(buf.get(account, []))
-        if twts:
-            await ssv.broadcast(twts, ssv.name, 0.5)
-
+        await ssv.broadcast(twts, ssv.name, 0.5)
 
 @sv.on_prefix('看推', only_to_me=True)     # for test
 async def one_tweet(bot, ev: CQEvent):

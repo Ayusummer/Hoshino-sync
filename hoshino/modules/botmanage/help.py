@@ -47,7 +47,7 @@ def gen_bundle_manual(bundle_name, service_list, gid):
     return '\n'.join(manual)
 
 
-@sv.on_prefix(('help', '帮助'))
+""" @sv.on_prefix(('help', '帮助'))
 async def send_help(bot, ev: CQEvent):
     bundle_name = ev.message.extract_plain_text().strip()
     bundles = Service.get_bundles()
@@ -55,5 +55,5 @@ async def send_help(bot, ev: CQEvent):
         await bot.send(ev, TOP_MANUAL)
     elif bundle_name in bundles:
         msg = gen_bundle_manual(bundle_name, bundles[bundle_name], ev.group_id)
-        await bot.send(ev, msg)
+        await bot.send(ev, msg) """
     # else: ignore
