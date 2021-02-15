@@ -7,6 +7,8 @@ local_coolq_config/
 hoshino/modules/bilisearchspider/spider_conifg.json   
 ## 功能开关web设置文件
 hoshino/modules/botmanage/web_service_manager/view.py
+## 人工智障配置文件
+hoshino/modules/aichat/aichat.py
 
 # Database
 db.json
@@ -131,6 +133,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
 
 
 
