@@ -3,6 +3,7 @@ config.py
 config.json
 hoshino/config/
 local_coolq_config/
+hoshino/modules/bilisearchspider/spider_conifg.json
 
 # Database
 db.json
@@ -128,5 +129,5 @@ venv.bak/
 # mkdocs documentation
 /site
 
-# mypy
-.mypy_cache/
+
+
