@@ -44,8 +44,8 @@ EXPR_DONT_UNDERSTAND = (
 
 ################
 # 请填入自己的AI应用ID和KEY
-app_id = '2149832706'
-app_key = 'Z4Kp3Fu3iOXLknr7'
+app_id = '******'
+app_key = '******'
 ################
 
 def getReqSign(params: dict) -> str:
