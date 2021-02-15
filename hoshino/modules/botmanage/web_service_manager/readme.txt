@@ -2,8 +2,8 @@
 
 安装使用：
 按照hoshino添加模块方法添加该插件：推荐将web_service_manager文件夹放入hoshino botmanager模块下
-修改view.py里ip和密码
-私聊bot发送bot设置
+将view1.py重命名为view.py并修改view.py里的ip和密码
+私聊bot发送 bot设置
 
 注意事项：
 hoshino config文件夹__bot__.py中的HOST请设置为 0.0.0.0以开放公网访问

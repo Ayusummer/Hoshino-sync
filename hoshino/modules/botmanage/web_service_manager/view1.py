@@ -17,10 +17,10 @@ app = bot.server_app
 if not app.config.get('SECRET_KEY'):
     app.config['SECRET_KEY'] = get_random_str(10)
 
-public_address = '106.14.66.197' #改为你服务器的公网ip,域名应该也可以，我没试过
+public_address = '**********'   # ''内的部分改为你服务器的公网ip,域名应该也可以，我没试过
 port = bot.config.PORT
-botname = bot.config.NICKNAME   #新增行，用于获取bot昵称(2020.7.17)
-passwd = '1511573543' #登录密码
+botname = bot.config.NICKNAME   # 新增行，用于获取bot昵称(2020.7.17)
+passwd = '******'               # ''内的部分改为你想设置的登录密码
 
 @switcher.before_request
 async def _():
