@@ -1,3 +1,11 @@
+'''
+Author: your name
+Date: 2021-02-15 11:57:28
+LastEditTime: 2021-02-15 12:16:03
+LastEditors: your name
+Description: In User Settings Edit
+FilePath: \HoshinoBot\hoshino\modules\anticoncurrency\anti_concurrency.py
+'''
 import datetime
 from functools import wraps
 
@@ -14,7 +22,7 @@ from . import Process_Monitor
 如: ANTI_CONCURRENCY_GROUPS = [['猜头像', '猜角色'], ['完美配对', '神经衰弱']]
 表示"猜头像"指令不能和"猜角色"指令并发, "完美配对"指令不能和"神经衰弱"指令并发
 """
-ANTI_CONCURRENCY_GROUPS = [[]]
+ANTI_CONCURRENCY_GROUPS = [['猜头像', '猜角色', 'cygames']]
 # 是否允许同一条指令自己和自己并发
 SELF_CONCURRENCY = True
 # HoshinoBot的触发器字典，一般不用修改
