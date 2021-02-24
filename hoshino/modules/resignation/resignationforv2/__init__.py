@@ -100,7 +100,9 @@ async def create_resignation_report(bot, event):
 
     #将饼图和柱状图粘贴到模板图,mask参数控制alpha通道，括号的数值对是偏移的坐标
     current_folder = os.path.dirname(__file__)
-    img = Image.open(os.path.join(current_folder,'会战报告模板.jpg'))
+    #img = Image.open(os.path.join(current_folder,'会战报告模板.jpg'))
+    img = Image.open(os.path.join(os.path.expanduser(hoshino.config.RES_DIR), 'img', 'priconne', 'unit','会战报告模板.jpg'))
+
     img.paste(pie_img, (610,890), mask=pie_img.split()[3])  #饼图的位置
     img.paste(bar_img, (110,960), mask=bar_img.split()[3])  #柱状图的位置
 
