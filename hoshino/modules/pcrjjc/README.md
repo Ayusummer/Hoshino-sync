@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-02-27 22:51:52
+ * @LastEditTime: 2021-02-27 22:55:03
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \HoshinoBot\hoshino\modules\pcrjjc\README.md
+-->
 # pcrjjc2
 
 本插件是[pcrjjc](https://github.com/lulu666lulu/pcrjjc)重置版，不需要使用其他后端api，但是需要自行配置客户端  
@@ -6,7 +14,7 @@
 **本项目基于AGPL v3协议开源，由于项目特殊性，禁止基于本项目的任何商业行为**
 
 ## 配置方法
-
+- 首先把`account.json.copy`的`.copy`去掉
 1. 更改account.json内的account和password为你的bilibili账号的用户名和密码, admin为管理员的qq，用来接受bilibili验证码进行登录
 2. 机器人登录需要验证码时会将链接形式私聊发给admin，这时你需要点进链接正确验证，如果成功，将会出现如下的内容：  
 `
