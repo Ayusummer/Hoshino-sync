@@ -4,6 +4,9 @@ config.json
 hoshino/config/
 local_coolq_config/
 
+# Pycharm文件
+.idea
+
 ## B站爬虫缓存
 hoshino/modules/bilisearchspider/spider_conifg.json   
 ## 功能开关web设置文件
