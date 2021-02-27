@@ -4,7 +4,7 @@ config.json
 hoshino/config/
 local_coolq_config/
 
-# Pycharm文件
+## Pycharm文件
 .idea
 
 ## B站爬虫缓存
@@ -13,6 +13,8 @@ hoshino/modules/bilisearchspider/spider_conifg.json
 hoshino/modules/botmanage/web_service_manager/view.py
 ## 人工智障配置文件
 hoshino/modules/aichat/aichat.py
+## 竞技场背刺配置文件
+hoshino/modules/pcrjjc/account.json
 
 # Database
 db.json
@@ -137,6 +139,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
 
 
 
