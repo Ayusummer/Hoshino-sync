@@ -3,6 +3,7 @@ config.py
 config.json
 hoshino/config/
 local_coolq_config/
+
 ## B站爬虫缓存
 hoshino/modules/bilisearchspider/spider_conifg.json   
 ## 功能开关web设置文件
