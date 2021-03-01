@@ -1,5 +1,14 @@
+# 未测试完成的模块
+/hoshino/modules/kasumi-challenge/
+
 # wiki文件
 HoshinoBot.wiki
+
+# VSCode文件
+test.session.sql
+.vscode/
+
+
 
 # Config Files
 config.py
@@ -37,9 +46,6 @@ images/
 # 暂时删除的代码
 TRASH/
 kokkoro-OLD/
-
-# VSCode Folder
-.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -142,6 +148,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
 
 
 
