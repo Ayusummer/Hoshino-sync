@@ -31,6 +31,7 @@ class RunningJudger:
     def __init__(self):
         self.on = {}
         self.support = {}
+        self.stop = {}
     def set_support(self,gid):
         self.support[gid] = {}
     def get_support(self,gid):
