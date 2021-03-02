@@ -27,6 +27,8 @@ hoshino/modules/botmanage/web_service_manager/view.py
 hoshino/modules/aichat/aichat.py
 ## 竞技场背刺配置文件
 hoshino/modules/pcrjjc/account.json
+## 竞技场绑定信息
+hoshino/modules/pcrjjc/binds.json
 
 # Database
 db.json
@@ -148,6 +150,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
 
 
 
