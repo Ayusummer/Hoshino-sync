@@ -49,10 +49,16 @@ class RunningJudger:
             return 0
     def get_on_off_status(self, gid):
         return self.on[gid] if self.on.get(gid) is not None else False
+    def get_on_shut_down_status(self,gid):
+        return self.stop[gid] if self.stop.get(gid) is not None else False
     def turn_on(self, gid):
         self.on[gid] = True
     def turn_off(self, gid):
         self.on[gid] = False
+    def shut_down(self, gid):
+        self.stop[gid] = True
+    def un_shut_down(self, gid):
+        self.stop[gid] = False
         
                        
 running_judger = RunningJudger()
