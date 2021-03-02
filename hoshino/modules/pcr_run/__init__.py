@@ -31,7 +31,6 @@ class RunningJudger:
     def __init__(self):
         self.on = {}
         self.support = {}
-        self.stop = {}
     def set_support(self,gid):
         self.support[gid] = {}
     def get_support(self,gid):
@@ -50,16 +49,10 @@ class RunningJudger:
             return 0
     def get_on_off_status(self, gid):
         return self.on[gid] if self.on.get(gid) is not None else False
-    def get_on_shut_down_status(self,gid):
-        return self.stop[gid] if self.stop.get(gid) is not None else False
     def turn_on(self, gid):
         self.on[gid] = True
     def turn_off(self, gid):
         self.on[gid] = False
-    def shut_down(self, gid):
-        self.stop[gid] = True
-    def un_shut_down(self, gid):
-        self.stop[gid] = False
         
                        
 running_judger = RunningJudger()
@@ -510,12 +503,7 @@ def introduce_race(Race_list):
     msg += f"所有人请在{SUPPORT_TIME}秒内选择支持的选手。格式如下：\n1/2/3/4/5号xx金币\n如果金币为0，可以发送：\n领赛跑金币"    
     return msg    
         
-@sv.on_prefix(('停止赛跑'))
-async def stop_run(bot, ev:CQEvent):
-    if not priv.check_priv(ev, priv.ADMIN):
-        await bot.finish(ev, '只有群管理才能停止赛跑', at_sender=True)
-    running_judger.shut_down(ev.group_id)
-
+            
 @sv.on_prefix(('测试赛跑', '赛跑开始'))
 async def Racetest(bot, ev: CQEvent):
     #if not priv.check_priv(ev, priv.ADMIN):
@@ -570,10 +558,7 @@ async def Racetest(bot, ev: CQEvent):
         check = check_game(position,winner)
         if check[0]!=0:
             break
-        if running_judger.get_on_shut_down_status(ev.group_id):
-            running_judger.un_shut_down(ev.group_id)
-            running_judger.clean_support(ev.group_id)
-            await bot.finish(ev,'已停止赛跑')              
+            
         await asyncio.sleep(ONE_TURN_TIME)
         skillmsg = "技能发动阶段:\n"
         skillmsg += skill_race(Race_list,position,silence,pause,ub,gid)
