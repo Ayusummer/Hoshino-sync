@@ -15,6 +15,7 @@ config.py
 config.json
 hoshino/config/
 local_coolq_config/
+hoshino/modules/baidupan/config.yml
 
 ## Pycharm文件
 .idea
