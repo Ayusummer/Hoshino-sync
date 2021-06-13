@@ -1,21 +1,22 @@
 ##跑道上的事件
 
 """
-	事件可继续添加，增加后在 caseTrigger() 里做处理
+事件可继续添加，增加后在 caseTrigger() 里做处理
 
-	text	触发后的显示
-	name	在跑道上的显示
-	color	在跑道上显示的颜色
-	range	触发后在这个范围随机一个数值
+text	触发后的显示
+name	在跑道上的显示
+color	在跑道上显示的颜色
+range	触发后在这个范围随机一个数值
 """
 
-# 事件编号 编号顺序和RUNWAY_CASE对应
+# 事件编号 编号顺序和 RUNWAY_CASE 对应
 CASE_NONE = 0
-CASE_HEALTH = 1  # 生命值事件
+CASE_HEALTH = 1  	# 生命值事件
 CASE_DEFENSIVE = 2  # 防御力事件
-CASE_ATTACK = 3  # 攻击力事件
-CASE_TP = 4  # tp值事件
-CASE_MOVE = 5  # 移动位置事件
+CASE_ATTACK = 3  	# 攻击力事件
+CASE_TP = 4  		# tp 值事件
+CASE_MOVE = 5  		# 移动位置事件
+
 
 RUNWAY_CASE = [
     {

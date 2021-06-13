@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import List
 import os
-import asyncio
+import asyncio  # 异步模块
 import math
 import random
 import re
@@ -28,18 +28,41 @@ from hoshino.typing import CQEvent
 from hoshino import R, Service, priv, log
 from hoshino.modules.priconne import chara
 
-from .role import (ROLE,
-                   EFFECT_DEFENSIVE, EFFECT_ATTACK, EFFECT_DISTANCE, EFFECT_HEALTH, EFFECT_MOVE, EFFECT_TP,
-                   EFFECT_MOVE_GOAL, EFFECT_OUT_TP, EFFECT_OUT_TURN, EFFECT_IGNORE_DIST,
-                   TRIGGER_ME, TRIGGER_ALL_EXCEPT_ME, TRIGGER_ALL, TRIGGER_SELECT, TRIGGER_NEAR)
-from .runway_case import (CASE_NONE, CASE_ATTACK, CASE_DEFENSIVE, CASE_HEALTH,
-                          CASE_MOVE, CASE_TP, RUNWAY_CASE)
+from .role import (
+                    ROLE,    # 角色字典
+                    EFFECT_DEFENSIVE,    # 防御改变,   正数为增加，负数为减少  number
+                    EFFECT_ATTACK,       # 攻击力改变, 正数为增加，负数为减少  number
+                    EFFECT_DISTANCE,     # 距离改变,   正数为增加，负数为减少  number
+                    EFFECT_HEALTH,       # 生命值改变, 正数为回血，负数为造成伤害   tuple元组 (数值，加成比例, 是否是真实伤害)
+                    EFFECT_TP,           # TP 改变,   正数为增加，负数为减少  number
+                    EFFECT_MOVE,         # 移动, 正数为前进负数为后退（触发跑道事件）	number
+                    EFFECT_MOVE_GOAL,    # 向目标移动（一个技能有多个效果且包括向目标移动，向目标移动效果必须最先触发） tuple元组(移动距离，是否无视攻击范围)
+                    EFFECT_OUT_TP,       # 令目标出局时tp变动    number
+                    EFFECT_OUT_TURN,     # 令目标出局时锁定回合    number（锁定回合：不会切换到下一个玩家，当前玩家继续丢色子和放技能）
+                    EFFECT_IGNORE_DIST,  # 无视距离效果，参数填啥都行，不会用到    [PS: 这个效果必须放在被动（不触发跑道事件）]
+                    TRIGGER_ME,          # 只对自己有效
+                    TRIGGER_ALL_EXCEPT_ME,   # 对所有人有效(除了自己)
+                    TRIGGER_ALL,         # 对所有人有效(包括自己)
+                    TRIGGER_SELECT,      # 选择目标
+                    TRIGGER_NEAR         # 离自己最近的目标
+                   )
+from .runway_case import (
+                            CASE_NONE,      # 0: 占个空位，代表不触发事件
+                            CASE_HEALTH,    # 1: 生命值事件
+                            CASE_DEFENSIVE, # 2: 防御力事件
+                            CASE_ATTACK,    # 3: 攻击力事件
+                            CASE_TP,        # 4: tp 值事件
+                            CASE_MOVE,      # 移动位置事件
+                            RUNWAY_CASE     # 事件列表字典 [{},{},...]
+                          )
 
+# 模块名为 pcr_scrimmage, 功能默认启用, 默认在功能列表(lssv)中不可见
 sv = Service('pcr_scrimmage', manage_priv=priv.ADMIN, enable_on_default=True, visible=False)
-FILE_PATH = os.path.dirname(__file__)
-
-IMAGE_PATH = R.img('pcr_scrimmage').path
+FILE_PATH = os.path.dirname(__file__)       # 定义当前文件(pcr_scrimmage.py)路径
+IMAGE_PATH = R.img('pcr_scrimmage').path    # 获取 PCR 大乱斗资源文件存储根目录
 logger = log.new_logger('pcr_scrimmage')
+
+# 如果在 hoshino 的 res 目录下没有 pcr_scrimmage 路径则新建该目录
 if not os.path.exists(IMAGE_PATH):
     os.mkdir(IMAGE_PATH)
     logger.info('create folder succeed')

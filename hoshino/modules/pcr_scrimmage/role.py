@@ -52,9 +52,11 @@
 		near				离自己最近
 
 """
-EFFECT_HEALTH = "health_change"  # 生命值改变，正数为回血，负数为造成伤害		tuple元组 (数值，加成比例, 是否是真实伤害)
 
-EFFECT_DEFENSIVE = "defensive_change"  # 防御改变，正数为增加，负数为减少 			number ↓同理
+
+EFFECT_HEALTH = "health_change"         # 生命值改变，正数为回血，负数为造成伤害		tuple元组 (数值，加成比例, 是否是真实伤害)
+
+EFFECT_DEFENSIVE = "defensive_change"   # 防御改变，正数为增加，负数为减少 			number ↓同理
 EFFECT_DISTANCE = "distance_change"
 EFFECT_ATTACK = "attack_change"
 EFFECT_TP = "tp_change"  # ↑同理
@@ -73,6 +75,7 @@ TRIGGER_ALL_EXCEPT_ME = "all_except_me"  # 对所有人有效(除了自己)
 TRIGGER_ME = "me"  # 只对自己有效
 TRIGGER_NEAR = "near"  # 离自己最近的目标
 
+# 角色字典
 ROLE = {
     # 注意 :id要和 _pcr_data.py 里对应角色一样
     1060: {
