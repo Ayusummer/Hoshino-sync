@@ -144,6 +144,7 @@ FOUR_ROUND_ATTACK = 10      # 每隔4回合增加的攻击力
 HIT_DOWN_TP = 20    # 击倒获得的tp
 
 RET_ERROR = -1      # 错误
+RET_NORMAL = 0
 RET_SUCCESS = 1     # 成功
 
 
@@ -647,7 +648,7 @@ class PCRScrimmage:
     # 技能效果生效
     def skillEffect(self, use_skill_player: Role, goal_player: Role, skill_effect, back_msg: List):
         if goal_player.now_stage == NOW_STAGE_OUT:
-            return
+            return RET_NORMAL, ''
 
         use_player_name = uid2card(use_skill_player.user_id, self.user_card_dict)
         goal_player_name = uid2card(goal_player.user_id, self.user_card_dict)
