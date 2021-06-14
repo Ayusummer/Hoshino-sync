@@ -68,8 +68,10 @@ if not os.path.exists(IMAGE_PATH):
     logger.info('create folder succeed')
 
 
-async def get_user_card_dict(bot, group_id):
-    mlist = await bot.get_group_member_list(group_id=group_id)
+async def get_user_card_dict(bot, group_id) -> dict:
+    """获取成员及其卡片字典
+    """
+    mlist = await bot.get_group_member_list(group_id=group_id)  # 根据群号获取成员列表
     d = {}
     for m in mlist:
         d[m['user_id']] = m['card'] if m['card'] != '' else m['nickname']
@@ -77,15 +79,21 @@ async def get_user_card_dict(bot, group_id):
 
 
 def uid2card(uid, user_card_dict):
+    """返回 uid
+    存疑, 这句没太看懂;
+    为什么 uid 不在字典键里却可以获取到 user_card_dict[uid] ?
+    """
     return str(uid) if uid not in user_card_dict.keys() else user_card_dict[uid]
 
 
-# 防御力计算机制。
-# 100点防御力内，每1点防御力增加0.1%伤害减免；
-# 100点防御力后，每1点防御力增加0.05%伤害减免；
-# 最高有效防御力为1000
-# （防御力可无限提升，但最高只能获得55%伤害减免）
 def hurt_defensive_calculate(hurt, defensive):
+    """防御力计算机制
+    100点防御力内，每1点防御力增加0.1%伤害减免；
+    100点防御力后，每1点防御力增加0.05%伤害减免；
+    最高有效防御力为1000（防御力可无限提升，但最高只能获得55%伤害减免）
+
+    :return: 减伤后的伤害值
+    """
     percent = 0.0
     if defensive <= 100:
         percent = defensive * 0.001
@@ -102,8 +110,8 @@ OFFSET_X = 45  # 整体右移
 OFFSET_Y = 50  # 整体下移
 
 ###线宽###		（别改）
-RUNWAY_LINE_WDITH = 4  # 跑道线宽
-STATU_LINE_WDITH = 2  # 状态条线宽 血条tp条
+RUNWAY_LINE_WDITH = 4   # 跑道线宽
+STATU_LINE_WDITH = 2    # 状态条线宽 血条tp条
 
 ###常用颜色###
 COLOR_BLACK = (0, 0, 0)
@@ -111,61 +119,64 @@ COLOR_WRITE = (255, 255, 255)
 COLOR_RED = (255, 0, 0)
 COLOR_GREEN = (0, 255, 0)
 COLOR_BLUE = (0, 0, 255)
-COLOR_CAM_GREEN = (30, 230, 100)  # 血条填充色
-COLOR_CAM_BLUE = (30, 144, 255)  # tp条填充色
+COLOR_CAM_GREEN = (30, 230, 100)    # 血条填充色
+COLOR_CAM_BLUE = (30, 144, 255)     # tp条填充色
 
 ###当前房间状态###
-NOW_STATU_WAIT = 0
-NOW_STATU_SELECT_ROLE = 1
-NOW_STATU_OPEN = 2
-NOW_STATU_END = 3
-NOW_STATU_WIN = 4
+NOW_STATU_WAIT = 0          # 等待
+NOW_STATU_SELECT_ROLE = 1   # 选取角色
+NOW_STATU_OPEN = 2          # 大乱斗进行中
+NOW_STATU_END = 3           # 大乱斗结束
+NOW_STATU_WIN = 4           # 获胜结算
 
 ###当前玩家处于什么阶段###
 NOW_STAGE_WAIT = 0  # 等待
 NOW_STAGE_DICE = 1  # 丢色子
-NOW_STAGE_SKILL = 2  # 释放技能
-NOW_STAGE_OUT = 3  # 出局
+NOW_STAGE_SKILL = 2 # 释放技能
+NOW_STAGE_OUT = 3   # 出局
 
-MAX_PLAYER = 4  # 最大玩家数量
-MAX_TP = 100  # tp值上限
-MAX_DIST = 15  # 最大攻击距离
-ONE_ROUND_TP = 10  # 单回合获得tp量
-FOUR_ROUND_DISTANCE = 2  # 每隔4回合增加的攻击距离
-FOUR_ROUND_ATTACK = 10  # 每隔4回合增加的攻击力
-HIT_DOWN_TP = 20  # 击倒获得的tp
+MAX_PLAYER = 4      # 最大玩家数量
+MAX_TP = 100        # tp值上限
+MAX_DIST = 15       # 最大攻击距离
+ONE_ROUND_TP = 10   # 单回合获得tp量
+FOUR_ROUND_DISTANCE = 2     # 每隔4回合增加的攻击距离
+FOUR_ROUND_ATTACK = 10      # 每隔4回合增加的攻击力
+HIT_DOWN_TP = 20    # 击倒获得的tp
 
-RET_ERROR = -1  # 错误
-RET_SUCCESS = 1  # 成功
+RET_ERROR = -1      # 错误
+RET_SUCCESS = 1     # 成功
 
 
 # 角色
 class Role:
     def __init__(self, user_id) -> None:
+        """初始化大乱斗玩家及其角色(空模板)
+        """
         self.user_id = user_id  # 玩家的qq号
-        self.role_id = 0  # pcr角色编号
-        self.role_icon = None  # 角色头像
-        self.player_num = 0  # 玩家在这个房间的编号
-        self.room_obj = None  # 房间对象
+        self.role_id = 0        # pcr角色编号
+        self.role_icon = None   # 角色头像
+        self.player_num = 0     # 玩家在这个房间的编号
+        self.room_obj = None    # 房间对象
 
-        self.name = ''  # 角色名
-        self.max_health = 0  # 生命值
-        self.distance = 0  # 攻击距离
-        self.attack = 0  # 攻击力
-        self.defensive = 0  # 防御力
-        self.tp = 0  # tp值（能量值）
-        self.save_tp = 0  # 保存的tp值
+        self.name = ''          # 角色名
+        self.max_health = 0     # 最大生命值
+        self.distance = 0       # 攻击距离
+        self.attack = 0         # 攻击力
+        self.defensive = 0      # 防御力
+        self.tp = 0             # tp 值（能量值）
+        self.save_tp = 0        # 保存的 tp 值
 
-        self.active_skills = []  # 技能列表
-        self.passive_skills = []  # 被动列表
+        self.active_skills = []     # 技能列表
+        self.passive_skills = []    # 被动列表
 
-        self.now_health = 0  # 当前生命值
-        self.now_location = 0  # 当前位置
+        self.now_health = 0     # 当前生命值
+        self.now_location = 0   # 当前位置
         self.now_stage = NOW_STAGE_WAIT  # 当前处于什么阶段
 
-    # 选择角色后对数据的初始化
     def initData(self, role_id, role_info, room_obj):
-        role_data = ROLE[role_id]
+        """选择角色后对数据的初始化
+        """
+        role_data = ROLE[role_id]   # 从角色字典中获取角色数据
         if role_data:
             self.role_id = role_id
             self.role_icon = role_info.icon.open()
@@ -183,71 +194,109 @@ class Role:
 
             self.now_health = self.max_health
 
-    # 属性数值改变的统一处理
     def healthChange(self, num):
+        """生命值及其相关变动处理
+        生命值变动, 受伤回复 TP, 生命值归零出局
+        """
+        # 当前玩家处于出局状态则跳过, 不处理
         if self.now_stage == NOW_STAGE_OUT:
             return
-        if num < 0:  # 如果生命值减少，则按百分比回复tp
+        # 如果生命值减少，则按百分比回复tp(每损失 1% 的最大生命值回复 2 点 TP)
+        if num < 0:
             hurt_tp = math.floor(abs(num) / self.max_health * 100 / 2)
             self.tpChange(hurt_tp)
-        self.now_health += num
+        self.now_health += num  # 当前生命值变动
+        # 当前生命值不会超过最大生命值
         if self.now_health > self.max_health:
             self.now_health = self.max_health
+        # 如果当前生命值 <0 则当前生命值归零并调用出局处理
         elif self.now_health <= 0:
             self.now_health = 0
             self.room_obj.outDispose(self)
 
     def distanceChange(self, num):
-        self.distance += num
+        """攻击距离变动
+        """
+        self.distance += num    # 攻击距离变动
+        # 攻击距离不会大于最大攻击距离
         if self.distance > MAX_DIST:
             self.distance = MAX_DIST
+        # 攻击距离不会小于 0
         elif self.distance < 0:
             self.distance = 0
 
     def attackChange(self, num):
+        """攻击力变动
+        """
+        # 当前玩家处于出局状态则跳过, 不处理
         if self.now_stage == NOW_STAGE_OUT:
             return
         self.attack += num
+        # 攻击力不会 < 0
         if self.attack < 0:
             self.attack = 0
 
     def defensiveChange(self, num):
+        """防御力变动
+        要注意的是这里的防御力是可以无限叠加的, 但实际上这里只是个数值而已
+        防御力的生效是写在受伤函数 hurt_defensive_calculate(hurt, defensive) 里的
+        在受伤函数中防御力超过 1000 都按照 1000 点进行计算
+        """
+        # 当前玩家处于出局状态则跳过, 不处理
         if self.now_stage == NOW_STAGE_OUT:
             return
         self.defensive += num
+        # 防御力不会低于 0
         if self.defensive < 0:
             self.defensive = 0
 
     def tpChange(self, num, is_save=False):
+        """"TP 变动
+        """
+        # 当前玩家处于出局状态则跳过, 不处理
         if self.now_stage == NOW_STAGE_OUT:
             return
+        # 当前成员还活着? 就变动 tp(上句话中好像已经略过了出局的玩家, 这句话我暂且蒙古)
         if is_save:
             self.save_tp += num
             return
         self.tp += num
+        # 下面这句暂时蒙古, save_tp 是指保存的 tp 值, 具体有什么用还要继续看下去
         self.tp += self.save_tp
         self.save_tp = 0
+        # TP 值不会超过上限
         if self.tp > MAX_TP:
             self.tp = MAX_TP
+        # TP 值不会小于 0
         elif self.tp < 0:
             self.tp = 0
 
     def locationChange(self, num, runway):
+        """位置变动
+
+        """
+        # 当前玩家处于出局状态则跳过, 不处理
         if self.now_stage == NOW_STAGE_OUT:
             return
+        # 将玩家从当前位置列表中清除
         runway[self.now_location]["players"].remove(self.user_id)
-        self.now_location += num
+        self.now_location += num    # 当前位置变动
+        # 当前位置基于跑到的最大长度循环变动
         if self.now_location >= len(runway):
             self.now_location -= len(runway)
         elif self.now_location < 0:
             self.now_location = len(runway) + self.now_location
+        # 在跑到相应位置更新玩家的新位置
         runway[self.now_location]["players"].append(self.user_id)
 
     def stageChange(self, stage):
+        """更新玩家当前所处的阶段(等待, 丢色子, 释放技能, 出局)
+        """
         self.now_stage = stage
 
-    # 检查当前状态
     def checkStatu(self, scrimmage):
+        """检查当前状态
+        """
         msg = [f"玩家：{uid2card(self.user_id, scrimmage.user_card_dict)}",
                f"角色：{self.name}",
                f"生命值：{self.now_health}/{self.max_health}",
