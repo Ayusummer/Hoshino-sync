@@ -995,6 +995,7 @@ class PCRScrimmage:
 # 管理器
 class manager:
     def __init__(self):
+        # playing = {} 并且定义为一个 PCRScrimmage 对象组成的列表?
         self.playing: List[PCRScrimmage] = {}
 
     def is_playing(self, gid):
@@ -1007,7 +1008,7 @@ class manager:
         return self.playing[gid] if gid in self.playing else None
 
 
-mgr = manager()
+mgr = manager() # 初始化管理器
 WAIT_TIME = 3
 PROCESS_WAIT_TIME = 1
 
@@ -1126,9 +1127,14 @@ async def select_role(bot, ev: CQEvent):
 
 @sv.on_fullmatch(('扔色子', '扔骰子', '丢色子', '丢骰子', '丢', '扔'))
 async def throw_dice(bot, ev: CQEvent):
+    """丢色子处理
+    全字匹配命令('扔色子', '扔骰子', '丢色子', '丢骰子', '丢', '扔')
+    """
+    # 获取触发指令的群 id, 用户 id
     gid, uid = ev.group_id, ev.user_id
-
+    # 获取当前群的大乱斗管理器
     scrimmage = mgr.get_game(gid)
+    # 如果当前群未启用大乱斗或者大乱斗未开始则返回
     if not scrimmage or scrimmage.now_statu != NOW_STATU_OPEN:
         return
     # 已加入房间的玩家才能丢色子
@@ -1136,11 +1142,13 @@ async def throw_dice(bot, ev: CQEvent):
         return
     # 不是当前回合的玩家无法丢色子
     if scrimmage.getNowTurnPlayerObj().user_id != uid:
+        await bot.send(ev, '当前不是您的回合, 无法丢色子')
         return
     # 当前回合不是丢色子状态无法丢色子
     if scrimmage.getPlayerObj(uid).now_stage != NOW_STAGE_DICE:
+        await bot.send(ev, '您当前未处于掷骰阶段, 无法丢色子')
         return
-
+    # 丢一个 5 面骰作为步数
     step = random.choice(range(1, 6))
     await bot.send(ev, '色子结果为：' + str(step))
     await scrimmage.throwDice(uid, step, bot, ev)
