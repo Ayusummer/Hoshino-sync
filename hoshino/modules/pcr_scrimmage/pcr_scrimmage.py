@@ -139,8 +139,8 @@ MAX_PLAYER = 4      # 最大玩家数量
 MAX_TP = 100        # tp值上限
 MAX_DIST = 15       # 最大攻击距离
 ONE_ROUND_TP = 10   # 单回合获得tp量
-FOUR_ROUND_DISTANCE = 2     # 每隔4回合增加的攻击距离
-FOUR_ROUND_ATTACK = 10      # 每隔4回合增加的攻击力
+ROUND_DISTANCE = 2  # 每隔 x 回合增加的攻击距离(x 为当前存活人数)
+ROUND_ATTACK = 10   # 每隔 x 回合增加的攻击力
 HIT_DOWN_TP = 20    # 击倒获得的tp
 
 RET_ERROR = -1      # 错误
@@ -465,10 +465,11 @@ class PCRScrimmage:
         for iter_player_id in self.player_list:  # 每丢1次色子，所有玩家增加10点tp
             self.getPlayerObj(iter_player_id).tpChange(ONE_ROUND_TP)
         self.dice_num += 1
-        if self.dice_num > 4:
-            for iter_player_id in self.player_list:  # 每丢4次色子，所有玩家增加2点攻击距离
-                self.getPlayerObj(iter_player_id).distanceChange(FOUR_ROUND_DISTANCE)
-                self.getPlayerObj(iter_player_id).attackChange(FOUR_ROUND_ATTACK)
+        if self.dice_num % (len(self.now_playing_players) + 1) == 0:
+            # 每丢 x 次色子，所有玩家增加 2 点攻击距离 10 点攻击力
+            for iter_player_id in self.now_playing_players:
+                self.getPlayerObj(iter_player_id).distanceChange(ROUND_DISTANCE)
+                self.getPlayerObj(iter_player_id).attackChange(ROUND_ATTACK)
             self.dice_num = 1
 
         await self.caseTrigger(player, bot, ev)
