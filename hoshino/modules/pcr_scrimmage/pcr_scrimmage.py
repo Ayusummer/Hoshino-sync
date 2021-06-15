@@ -313,19 +313,28 @@ class Role:
 class PCRScrimmage:
     # 初始化
     def __init__(self, gid, manager, room_master, across_range=10, vertical_range=10, grid_size=50) -> None:
+        """初始化(空模板)
+
+        :param gid: 群号
+        :param manager: 管理器
+        :param room_master: 房主
+        :param across_range:
+        :param vertical_range:
+        :param grid_size:
+        """
         ##核心数据
-        self.gid = gid  # 群号
+        self.gid = gid      # 群号
         self.mgr = manager  # 管理器
         self.room_master = room_master  # 房主
-        self.player_list = {}  # 玩家列表  ####这个东西不能迭代values，不懂原理
-        self.now_statu = NOW_STATU_WAIT  # 当前游戏状态
-        self.now_turn = 0  # 现在是玩家x的回合
-        self.dice_num = 0  # 已丢色子次数的总数
-        self.lock_turn = 0  # 回合锁定，x回合内都是同个玩家
+        self.player_list = {}           # 玩家列表  ####这个东西不能迭代 values，不懂原理
+        self.now_statu = NOW_STATU_WAIT # 当前游戏状态
+        self.now_turn = 0   # 现在是玩家 x 的回合
+        self.dice_num = 0   # 已丢色子次数的总数
+        self.lock_turn = 0  # 回合锁定，x 回合内都是同个玩家
         self.now_playing_players = []  # 当前正在游玩的玩家id	[xxx, xxx]
-        self.rank = {}  # 结算排行	{1:xxx,2:xxx}
+        self.rank = {}      # 结算排行	{1:xxx,2:xxx}
 
-        self.user_card_dict = {}  # 群内所有成员信息
+        self.user_card_dict = {}        # 群内所有成员信息
 
         # 初始化跑道，总共36个格子
         self.runway = [{"players": [], "case": 0} for i in range((across_range - 1) * 4)]
@@ -420,8 +429,8 @@ class PCRScrimmage:
     # 回合改变，到下一个玩家
     def turnChange(self):
         now_turn_player = self.getNowTurnPlayerObj()
-        if now_turn_player.now_stage != NOW_STAGE_OUT:  # 如果当前玩家已经出局，则不改变状态
-            now_turn_player.stageChange(NOW_STAGE_WAIT)  # 已结束的玩家
+        if now_turn_player.now_stage != NOW_STAGE_OUT:      # 如果当前玩家已经出局，则不改变状态
+            now_turn_player.stageChange(NOW_STAGE_WAIT)     # 已结束的玩家
         else:
             self.lock_turn = 0  # 如果玩家已出局，则取消回合锁定
 
@@ -435,8 +444,8 @@ class PCRScrimmage:
             self.now_turn += 1
             if self.now_turn >= len(self.player_list):
                 self.now_turn = 0
-            next_turn_player = self.getNowTurnPlayerObj()  # 下一个玩家
-            if next_turn_player.now_stage != NOW_STAGE_OUT:  # 跳过已出局的玩家
+            next_turn_player = self.getNowTurnPlayerObj()       # 下一个玩家
+            if next_turn_player.now_stage != NOW_STAGE_OUT:     # 跳过已出局的玩家
                 if self.lock_turn > 0:  # 检查是否锁定了当前回合
                     now_turn_player.stageChange(NOW_STAGE_DICE)
                     self.now_turn = now_turn_player.player_num
