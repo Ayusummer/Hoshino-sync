@@ -318,9 +318,9 @@ class PCRScrimmage:
         :param gid: 群号
         :param manager: 管理器
         :param room_master: 房主
-        :param across_range:
-        :param vertical_range:
-        :param grid_size:
+        :param across_range: 用于定义图片长宽
+        :param vertical_range: 用于定义图片长宽
+        :param grid_size: 用于定义图片长宽
         """
         ##核心数据
         self.gid = gid      # 群号
@@ -336,7 +336,7 @@ class PCRScrimmage:
 
         self.user_card_dict = {}        # 群内所有成员信息
 
-        # 初始化跑道，总共36个格子
+        # 初始化跑道及每个格子上的事件，总共36个格子
         self.runway = [{"players": [], "case": 0} for i in range((across_range - 1) * 4)]
         for runway_case in self.runway:
             runway_case["case"] = random.choice(range(len(RUNWAY_CASE)))
@@ -479,6 +479,7 @@ class PCRScrimmage:
             for iter_player_id in self.now_playing_players:
                 self.getPlayerObj(iter_player_id).distanceChange(ROUND_DISTANCE)
                 self.getPlayerObj(iter_player_id).attackChange(ROUND_ATTACK)
+            # 实际上是每轮开始判断情况, 因此这里判断上一轮结束然后增加 ATK&DIS 同时将计数器置 1
             self.dice_num = 1
 
         await self.caseTrigger(player, bot, ev)
@@ -854,6 +855,7 @@ class PCRScrimmage:
 
     # 刷新当前状态图片
     def refreshNowImageStatu(self):
+        # 重新构建基础状态图片
         self.now_image = self.base_image.copy()
         self.now_draw = ImageDraw.Draw(self.now_image)
 
@@ -872,22 +874,26 @@ class PCRScrimmage:
             health_line_length = 96 * (player.now_health / player.max_health)
             tp_line_length = 96 * (player.tp / MAX_TP)
 
-            self.statuLineFill(health_line_length, offset_x, offset_y, -16, COLOR_CAM_GREEN)  # 血条填充
-            self.statuLineFill(tp_line_length, offset_x, offset_y, 1, COLOR_CAM_BLUE)  # tp条填充
-            self.roleStatuText(offset_x, offset_y, -23, text=str(player.now_health))  # 血条数值
-            self.roleStatuText(offset_x, offset_y, -5, text=str(player.tp))  # tp条数值
-            self.playerInfoText(offset_x, offset_y, 28, text=f'dist   ：{player.distance}')  # 攻击距离
-            self.playerInfoText(offset_x, offset_y, 12,
-                                text=f'name：{uid2card(player.user_id, self.user_card_dict)}')  # 玩家名字
+            self.statuLineFill(health_line_length, offset_x, offset_y, -16, COLOR_CAM_GREEN)    # 血条外框绘制
+            self.statuLineFill(tp_line_length, offset_x, offset_y, 1, COLOR_CAM_BLUE)           # tp 条外框绘制
 
-            if self.now_turn == player.player_num:  # 当前回合的玩家，头像框为绿色
+            self.roleStatuText(offset_x, offset_y, -23, text=str(player.now_health))    # 当前血条数值字样附加
+            self.roleStatuText(offset_x, offset_y, -5, text=str(player.tp))             # 当前 tp 条数值字样附加
+
+            self.playerInfoText(offset_x, offset_y, 28, text=f'攻击距离：{player.distance}')     # 攻击距离字样附加
+            self.playerInfoText(offset_x, offset_y, 12,
+                                text=f'name：{uid2card(player.user_id, self.user_card_dict)}')  # 玩家名字字样附加
+            # 当前回合的玩家，头像框为绿色
+            if self.now_turn == player.player_num:
                 self.drawBox(100, 100, self.grid_size * 2 + offset_x * 200, self.grid_size * 1.5 + offset_y * 190,
                              COLOR_GREEN, is_now=True)
-            if player.now_stage == NOW_STAGE_OUT:  # 已出局的玩家，头像框为黑色，且跑道旁不显示头像
+            # 已出局的玩家，头像框为黑色，且跑道旁不显示头像
+            if player.now_stage == NOW_STAGE_OUT:
                 self.drawBox(100, 100, self.grid_size * 2 + offset_x * 200, self.grid_size * 1.5 + offset_y * 190,
                              COLOR_BLACK, is_now=True)
+            # 显示玩家角色位置
             else:
-                self.roleIconLocation(player.role_icon, player.now_location)  # 显示玩家角色位置
+                self.roleIconLocation(player.role_icon, player.now_location)
             num += 1
 
     # 显示初始化
@@ -920,6 +926,24 @@ class PCRScrimmage:
                              STATU_LINE_WDITH)  # TP框
         # 填充跑道事件文字
         self.fillCaseText()
+        # 追逐方向绘制
+        width = (self.vertical_range_x + 2) * self.grid_size
+        height = (self.across_range_y + 2) * self.grid_size
+        offset = 20 # 直线相对图像边框偏移量
+        # 绘制折线段
+        self.draw.line([
+            (width-offset-self.grid_size, offset),
+            (width-offset, offset),
+            (width-offset, offset+self.grid_size)
+        ], fill=COLOR_BLACK, width=RUNWAY_LINE_WDITH)
+        # 绘制箭头
+        offset_arrow_x = 5
+        offset_arrow_y = 10
+        self.draw.line([
+            (width-offset-offset_arrow_x, offset+self.grid_size-offset_arrow_y),
+            (width - offset, offset + self.grid_size),
+            (width-offset+offset_arrow_x, offset+self.grid_size-offset_arrow_y)
+        ], fill=COLOR_BLACK, width=RUNWAY_LINE_WDITH)
 
     # 画盒子（画框）
     def drawBox(self, length, width, offset_x, offset_y, color=COLOR_BLACK, line_width=RUNWAY_LINE_WDITH, is_now=False):
@@ -957,6 +981,8 @@ class PCRScrimmage:
 
     # 状态条填充   最大长度96  血条offset填-16，tp条填1
     def statuLineFill(self, length, offset_x, offset_y, offset, color=COLOR_BLACK, width=8):
+        """状态条填充   最大长度96  血条offset填-16，tp条填1
+        """
         self.now_draw.rectangle((OFFSET_X + self.grid_size * 2 + offset_x * 200 + 2,
                                  OFFSET_Y + self.grid_size * 4 + offset_y * 190 + offset,
                                  OFFSET_X + length + self.grid_size * 2 + offset_x * 200 + 2,
@@ -1083,6 +1109,7 @@ async def game_start(bot, ev: CQEvent):
     gid, uid = ev.group_id, ev.user_id
     scrimmage = mgr.get_game(gid)
     if not scrimmage or scrimmage.now_statu != NOW_STATU_WAIT:
+        await bot.send(ev, "当前群聊没有已创建的大乱斗")
         return
     if not uid == scrimmage.room_master:
         await bot.finish(ev, '只有房主才能开始', at_sender=True)
@@ -1132,7 +1159,7 @@ async def throw_dice(bot, ev: CQEvent):
     """
     # 获取触发指令的群 id, 用户 id
     gid, uid = ev.group_id, ev.user_id
-    # 获取当前群的大乱斗管理器
+    # 获取当前群的大乱斗对象
     scrimmage = mgr.get_game(gid)
     # 如果当前群未启用大乱斗或者大乱斗未开始则返回
     if not scrimmage or scrimmage.now_statu != NOW_STATU_OPEN:
@@ -1151,7 +1178,13 @@ async def throw_dice(bot, ev: CQEvent):
     # 丢一个 5 面骰作为步数
     step = random.choice(range(1, 6))
     await bot.send(ev, '色子结果为：' + str(step))
+    """
+    触发大乱斗丢色子事件, 更改当前位置
+    all survivors 10 tp up↑
+    每 num_or_survivor 轮所有存活玩家 2 attack_distance UP↑ 10 TP UP↑
+    """
     await scrimmage.throwDice(uid, step, bot, ev)
+    # 刷新当前状态图片
     scrimmage.refreshNowImageStatu()
 
     image_path = R.img(f'{IMAGE_PATH}/{ev.group_id}.jpg').path
