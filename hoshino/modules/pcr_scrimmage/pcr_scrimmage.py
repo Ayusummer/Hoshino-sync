@@ -1181,7 +1181,7 @@ async def throw_dice(bot, ev: CQEvent):
     """
     触发大乱斗丢色子事件, 更改当前位置
     all survivors 10 tp up↑
-    每 num_or_survivor 轮所有存活玩家 2 attack_distance UP↑ 10 TP UP↑
+    每 num_or_survivor 回合所有存活玩家 2 attack_distance UP↑, 10 ATK UP↑
     """
     await scrimmage.throwDice(uid, step, bot, ev)
     # 刷新当前状态图片
