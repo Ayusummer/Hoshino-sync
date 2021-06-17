@@ -1204,7 +1204,6 @@ async def throw_dice(bot, ev: CQEvent):
 @sv.on_message()  # 使用技能
 async def use_skill(bot, ev: CQEvent):
     gid, uid = ev.group_id, ev.user_id
-
     msg_text = ev.raw_message
     match = re.match(r'^(\d+)( |) *(?:\[CQ:at,qq=(\d+)])?', msg_text)
     if not match and msg_text != '跳过':
@@ -1227,6 +1226,12 @@ async def use_skill(bot, ev: CQEvent):
     if match:
         skill_id = match.group(1)
         goal_player_id = match.group(3) or '0'
+        if goal_player_id not in scrimmage.player_list:
+            await bot.send(ev, "该用户不在本局游戏内")
+        """
+        print("group[0]:{0},\ngroup[1]:{1},\ngroup[2]:{2},\ngroup[3]:{3}".format(
+            match.group(0) or '0', match.group(1) or '0', match.group(2) or '0', match.group(3) or '0'))
+        """
     else:
         skill_id = '0'
         goal_player_id = '0'
