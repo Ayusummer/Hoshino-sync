@@ -1,0 +1,1 @@
+- [原项目链接](https://github.com/GWYOG/GWYOG-Hoshino-plugins#3-b%E7%AB%99%E6%90%9C%E7%B4%A2%E7%88%AC%E8%99%ABbilisearchspider)
