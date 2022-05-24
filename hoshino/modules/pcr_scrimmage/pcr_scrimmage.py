@@ -1158,7 +1158,7 @@ async def select_role(bot, ev: CQEvent):
             scrimmage.now_statu = NOW_STATU_OPEN
 
 
-@sv.on_fullmatch(('扔色子', '扔骰子', '丢色子', '丢骰子', '丢', '扔'))
+@sv.on_fullmatch(('扔色子', '扔骰子', '丢色子', '丢骰子'))
 async def throw_dice(bot, ev: CQEvent):
     """丢色子处理
     全字匹配命令('扔色子', '扔骰子', '丢色子', '丢骰子', '丢', '扔')
