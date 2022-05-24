@@ -5,6 +5,7 @@ hoshino/modules/pcr_scrimmage/fonts/msyh.ttf
 hoshino/modules/word_cloud/simsunb.ttf
 hoshino/modules/word_cloud/STKAITI.TTF
 hoshino/modules/word_cloud/chatRecord.db
+hoshino/modules/headimg_generator/resources
 
 ## 图片文件
 hoshino/modules/word_cloud/back.jpg
