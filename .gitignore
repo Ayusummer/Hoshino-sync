@@ -1,4 +1,5 @@
 # 资源文件
+
 ## 字体文件
 hoshino/modules/pcr_scrimmage/fonts/msyh.ttf
 hoshino/modules/word_cloud/simsunb.ttf
@@ -9,6 +10,7 @@ hoshino/modules/headimg_generator/resources/images
 
 ## 图片文件
 hoshino/modules/word_cloud/back.jpg
+hoshino/modules/word_cloud/wordcloud
 
 # 未测试完成的模块
 /hoshino/modules/kasumi-challenge/
