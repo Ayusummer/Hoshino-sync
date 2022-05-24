@@ -142,6 +142,9 @@ git clone https://github.com/Ayusummer/HoshinoBot.git --depth 1
 # 切换到项目根目录
 cd HoshinoBot
 
+# 更新当前 pip
+pip install --upgrade pip
+
 # 安装 virtualenv
 pip install virtualenv
 

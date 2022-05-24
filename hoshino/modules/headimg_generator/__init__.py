@@ -50,10 +50,10 @@ class Handler:
         args: List[str] = []
         msg = event.message
 
-        if event.reply:
-            reply_imgs = event.reply.message["image"]
-            for reply_img in reply_imgs:
-                users.append(UserInfo(img_url=reply_img.data["url"]))
+        # if event.reply:
+        #     reply_imgs = event.reply.message["image"]
+        #     for reply_img in reply_imgs:
+        #         users.append(UserInfo(img_url=reply_img.data["url"]))
 
         for msg_seg in msg:
             if msg_seg.type == "at":

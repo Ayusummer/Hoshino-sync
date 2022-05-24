@@ -2,7 +2,7 @@
 
 基于[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)的制作头像相关的表情包插件。
 
-移植自[nonebot-plugin-petpet](https://github.com/noneplugin/nonebot-plugin-petpet)，，感谢[@MeetWq](https://github.com/MeetWq)以及参与该项目的所有成员！
+移植自[nonebot-plugin-petpet](https://github.com/noneplugin/nonebot-plugin-petpet)，感谢[@MeetWq](https://github.com/MeetWq)以及参与该项目的所有成员！
 
 ## 安装
 
@@ -18,6 +18,21 @@ git clone https://github.com/Lanly109/headimg_generator.git
 cd headimg_generator
 pip install -r requirements.txt
 ```
+
+
+`python 3.6`以下的还需安装以下依赖（[#1](https://github.com/Lanly109/headimg_generator/issues/1)）
+```bash
+pip install dataclasses
+``` 
+
+下载`releases`中的`resources.zip`，解压文件至`resources/`下，放置情况如下
+```bash
+.
+└── resources
+    ├── fonts
+    └── images
+``` 
+
 
 然后在```HoshinoBot\hoshino\config\__bot__.py```文件的```MODULES_ON```加入```headimg_generator```
 
