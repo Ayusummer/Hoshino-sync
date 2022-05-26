@@ -17,6 +17,7 @@ hoshino/modules/word_cloud/wordcloud
 
 # wiki文件
 HoshinoBot.wiki
+Hoshino-sync.wiki
 
 # VSCode文件
 test.session.sql
