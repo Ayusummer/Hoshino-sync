@@ -6,9 +6,17 @@
  * @Description: In User Settings Edit
  * @FilePath: \HoshinoBot\README.md
 -->
-- 个人自用的魔改版hoshino
-- 初衷是减轻会战用bot的负担而想在另一台服务器上搭个bot将一些压力大的服务以及后续更新的非pcr相关的服务分担过来
-- 由于想留下更新记录以及wiki又不想本地服务器都做改动所以fork了一个自用的仓库
+个人自用的魔改版 hoshino
+
+初衷是减轻会战用bot的负担而想在另一台服务器上搭个bot将一些压力大的服务以及后续更新的非pcr相关的服务分担过来
+
+由于想留下更新记录以及wiki又不想本地服务器都做改动所以fork了一个自用的仓库
+
+由于剔除了 PCR 相关功能加上由于太懒不拉更新导致后面完全无法和源仓库对齐, 所以有了这个仓库
+
+[Wiki 页面](https://github.com/Ayusummer/Hoshino-sync/wiki) 为各功能模块的说明
+
+---
 
 # 部署说明
 
