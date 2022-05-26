@@ -8,13 +8,20 @@
 -->
 个人自用的魔改版 hoshino
 
-初衷是减轻会战用bot的负担而想在另一台服务器上搭个bot将一些压力大的服务以及后续更新的非pcr相关的服务分担过来
+> 源仓库链接:  
+> [Ice-Cirno/HoshinoBot: A qqbot for Princess Connect Re:Dive (and other usage :) (github.com)](https://github.com/Ice-Cirno/HoshinoBot)
 
-由于想留下更新记录以及wiki又不想本地服务器都做改动所以fork了一个自用的仓库
+初衷是减轻会战用bot的负担而想在另一台服务器上搭个bot将一些压力大的服务以及后续更新的非 pcr 相关的服务分担过来
+
+由于想留下更新记录以及 wiki 又不想本地服务器都做改动所以 fork 了一个自用的仓库
 
 由于剔除了 PCR 相关功能加上由于太懒不拉更新导致后面完全无法和源仓库对齐, 所以有了这个仓库
 
 [Wiki 页面](https://github.com/Ayusummer/Hoshino-sync/wiki) 为各功能模块的说明
+
+> 仓库功能模块大多来源于社区插件整合, 来源有在 [Wiki 页面](https://github.com/Ayusummer/Hoshino-sync/wiki) 中说明  
+> 更多插件请参阅:   
+> [pcrbot/HoshinoBot-plugins-index: HoshinoBot 插件索引 (github.com)](https://github.com/pcrbot/HoshinoBot-plugins-index)
 
 ---
 
