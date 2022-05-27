@@ -146,55 +146,57 @@ git clone https://github.com/Ayusummer/HoshinoBot.git --depth 1
 使用 `--depth` 主要是因为由于之前错误上传资源文件, 导致仓库 `.git` 文件比较大, 如果拉取所有 git 记录的话会比较慢
 
 ---
-## 配置虚拟环境
+## 使用 poetry 配置虚拟环境
 
-安装并创建 virtualenv (继续在 Terminal 下执行命令)
+> [Introduction | Documentation | Poetry - Python dependency management and packaging made easy (python-poetry.org)](https://python-poetry.org/docs/#windows-powershell-install-instructions)
 
-> windows 下使用 anaconda 请先使用 `conda activate xxx` 激活 conda 环境
 
+Poetry 提供了一个自定义的安装程序, 通过解构 Poetry 的依赖关系, 将 Poetry 与系统的其他部分隔离开, 这是一种推荐的安装方式;
+
+`osx / linux / bashonwindows install instructions`:
+
+```shell
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+```
+
+`windows powershell install instructions`:
+
+```powershell
+(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
+```
+
+![image-20220527065741632](http://cdn.ayusummer233.top/img/202205270657858.png)
+
+poetry 会自动添加环境变量, 安装完后重启 `powershell`, 检查下 poetry 版本:
+
+```powershell
+poetry --version
+```
+
+配置 poetry 使得虚拟环境在项目根目录下生成(`.venv`)
+
+```powershell
+poetry config virtualenvs.in-project true
+```
+
+配置虚拟环境并安装依赖
 
 ```bash
 # 切换到项目根目录
 cd HoshinoBot
 
-# 更新当前 pip
-pip install --upgrade pip
-
-# 安装 virtualenv
-pip install virtualenv
-
-# 创建 virtualenv
-virtualenv env
-
-# 激活虚拟环境(ubuntu)
-source env/bin/activate
-# 激活虚拟环境(windows)
-env/Scripts/activate.bat
+# 安装依赖
+poetry install
 ```
 
-虚拟环境激活后此时命令行内会看到 `(env)`
+将 `hoshino/config_example` 目录中的 `config_example` 重命名为 `config` (或者拷贝出一个 `config_example` 再重命名)
 
-![image-20220523153808633](http://cdn.ayusummer233.top/img/202205231538777.png)
-
-> windows 环境下使用 anaconda 时, 在前面的步骤我们已经配置好了换源   
-> ubuntu 环境下需要再配置下源:  
-> 在 `/ubuntu/用户/` 路径下创建 `.pip` 文件夹, 在其中创建 `pip.conf` 文件  填入:
-> ```bash
-> [global]
-> index-url = https://mirrors.aliyun.com/pypi/simple/
-> [install]
-> trusted-host=mirrors.aliyun.com
-> ```  
-> 或者使用清华源:
-> ```
-> [global]
-> index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-> [install]
-> trusted-host=pypi.tuna.tsinghua.edu.cn
-> ```
-
-安装依赖
+根据 `config` 目录下的文件中的提示进行项目配置
 
 ```bash
-pip install -r requirements.txt
+# 激活虚拟环境
+poetry shell
+
+# 运行 run.py
+python run.py
 ```
