@@ -31,14 +31,17 @@ RES_URL = 'http://127.0.0.1:5000/static/'
 # 如欲启用新模块，请认真阅读部署说明，逐个启用逐个配置
 # 切忌一次性开启多个
 MODULES_ON = {
-    'botmanage',
-    'dice',
-    'groupmaster',
-    # 'hourcall',
+    'botmanage',    # Bot管理(广播,入退群提醒,服务菜单,功能开关Web)
+    'dice',         # 骰子
+    'groupmaster',  # 辱骂Bot->屏蔽消息,反holo,反骑空士,正则匹配聊天,进退群提醒,随机复读,睡眠禁言
+    'headimg_generator',    # 图片头像生成器
+    # 'hourcall',   # 时报
     # 'kancolle',
-    # 'mikan',
-    'pcrclanbattle',
-    'priconne',
+    # 'mikan',      # 蜜柑订阅
+    # 'music',        # 点歌
+    # 'pcr_run',      # pcr赛跑
+    # 'pcr_scrimmage', # pcr 大乱斗
+    'priconne', 
     # 'setu',
     # 'translate',
     # 'twitter',
