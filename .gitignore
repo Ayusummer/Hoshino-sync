@@ -8,6 +8,7 @@ hoshino/modules/word_cloud/STKAITI.TTF
 hoshino/modules/word_cloud/chatRecord.db
 hoshino/modules/headimg_generator/resources/fonts
 hoshino/modules/headimg_generator/resources/images
+hoshino/modules/everyday-bangumi/templates/chinese_font.ttf
 
 ## 图片文件
 hoshino/modules/word_cloud/back.jpg
