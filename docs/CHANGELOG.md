@@ -1,12 +1,12 @@
-<!--
- * @Author: your name
- * @Date: 2021-05-12 21:56:39
- * @LastEditTime: 2021-05-12 22:01:37
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \HoshinoBot\CHANGELOG.md
--->
 # 2022
+
+## 7.31
+
+### 每日番剧推送
+
+添加了 [benx1n/everyday-bangumi: 每日番剧推送 (github.com)](https://github.com/benx1n/everyday-bangumi)
+
+---
 
 ## 5-23
 - 添加了 [Lanly109/headimg_generator: 基于HoshinoBot的制作头像相关的表情包插件，移植自nonebot-plugin-petpet (github.com)](https://github.com/Lanly109/headimg_generator)
