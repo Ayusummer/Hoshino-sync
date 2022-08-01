@@ -35,6 +35,7 @@ emoji = "1.7.0"
 fonttools = "4.33.3"
 typing-extensions = "^4.2.0"
 playwright = "1.20.1"
+peewee = "^3.15.1"
 
 [tool.poetry.dev-dependencies]
 

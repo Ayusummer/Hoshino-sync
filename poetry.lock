@@ -555,6 +555,14 @@ python-versions = ">=3.6"
 numpy = ">=1.17.3"
 
 [[package]]
+name = "peewee"
+version = "3.15.1"
+description = "a little orm"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pillow"
 version = "9.1.1"
 description = "Python Imaging Library (Fork)"
@@ -902,7 +910,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b6e9624bf91067b9b8820382028f0cf3636165aa4cd134499ded535053c2411b"
+content-hash = "d1a84e6bfdbf8c979258a20b7727236d536f906ea2232a9b7297e53467e74a88"
 
 [metadata.files]
 aiocache = [
@@ -1350,6 +1358,7 @@ opencv-python = [
     {file = "opencv_python-4.5.1.48-cp39-cp39-win32.whl", hash = "sha256:5172cb37dfd8a0b4945b071a493eb36e5f17675a160637fa380f9c1d9d80535c"},
     {file = "opencv_python-4.5.1.48-cp39-cp39-win_amd64.whl", hash = "sha256:c8cc1f5ff3c352ebe756119014c4e4ec7ae5ac536d1f66b0316667ced37637c8"},
 ]
+peewee = []
 pillow = [
     {file = "Pillow-9.1.1-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:42dfefbef90eb67c10c45a73a9bc1599d4dac920f7dfcbf4ec6b80cb620757fe"},
     {file = "Pillow-9.1.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:ffde4c6fabb52891d81606411cbfaf77756e3b561b566efd270b3ed3791fde4e"},
