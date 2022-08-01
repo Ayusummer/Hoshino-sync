@@ -20,7 +20,7 @@ def download_image():
         #下载保存图片
         #file_suffix = os.path.splitext(image_url)[1]
         file_name = '{}{}{}{}'.format(file_path,os.sep,'today','.png') 
-        urllib.request.urlretrieve(image_url,filename=file_name,reporthook=callback) 
+        urllib.request.urlretrieve(image_url,filename=file_name,reporthook=None) 
         print("Download Successful！")
     except IOError as e:
         print("IOError,Please check on")
