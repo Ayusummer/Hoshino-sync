@@ -25,7 +25,8 @@ def download_image():
     except IOError as e:
         print("IOError,Please check on")
     except Exception as e:
-        print("Exception")
+        # 输出具体的错误内容
+        print(e)
 
 
 if __name__ == '__main__':
@@ -33,7 +34,7 @@ if __name__ == '__main__':
 
 sv = Service('Daily_News')
 
-@sv.on_fullmatch('今日新闻','每日新闻','新闻60秒','新闻60s')
+@sv.on_fullmatch(('今日新闻','每日新闻','新闻60秒','新闻60s'))
 async def Daily_News(bot, ev:CQEvent):
     tdimg = 'today' + ".png" 
     image_path = os.path.join(os.path.dirname(__file__),'imgs/',tdimg)
