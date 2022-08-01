@@ -140,7 +140,7 @@ conda activate 环境名
 在 VSCode 中打开 Terminal 执行以下命令
 
 ```bash
-git clone https://github.com/Ayusummer/HoshinoBot.git --depth 1
+git clone https://github.com/Ayusummer/Hoshino-sync.git --depth 1
 ```
 
 使用 `--depth` 主要是因为由于之前错误上传资源文件, 导致仓库 `.git` 文件比较大, 如果拉取所有 git 记录的话会比较慢
@@ -149,17 +149,48 @@ git clone https://github.com/Ayusummer/HoshinoBot.git --depth 1
 ## 使用 poetry 配置虚拟环境
 
 > [Introduction | Documentation | Poetry - Python dependency management and packaging made easy (python-poetry.org)](https://python-poetry.org/docs/#windows-powershell-install-instructions)
-
+>
+> [Introduction | master | Documentation | Poetry - Python dependency management and packaging made easy (python-poetry.org)](https://python-poetry.org/docs/master/#installing-with-the-official-installer)
 
 Poetry 提供了一个自定义的安装程序, 通过解构 Poetry 的依赖关系, 将 Poetry 与系统的其他部分隔离开, 这是一种推荐的安装方式;
 
-`osx / linux / bashonwindows install instructions`:
+### `osx / linux / bashonwindows install instructions`:
 
 ```shell
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-`windows powershell install instructions`:
+#### poetry安装慢的解决方案
+
+> [Python Poetry安装慢的解决办法（转载） - tahitimoon - 博客园 (cnblogs.com)](https://www.cnblogs.com/tahitimoon/p/15113082.html)
+>
+> [Introduction | master | Documentation | Poetry - Python dependency management and packaging made easy (python-poetry.org)](https://python-poetry.org/docs/master/#installing-with-the-official-installer)
+
+---
+
+#### 配置环境变量
+
+打开 `/root/.bashrc` 并在最后一行添加
+
+```bash
+export PATH="/root/.local/bin:$PATH"
+```
+
+加载环境变量
+
+```bash
+source /root/.bashrc
+```
+
+查看 poetry 版本
+
+```bash
+poetry --version
+```
+
+
+
+### `windows powershell install instructions`:
 
 ```powershell
 (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
@@ -172,6 +203,10 @@ poetry 会自动添加环境变量, 安装完后重启 `powershell`, 检查下 p
 ```powershell
 poetry --version
 ```
+
+---
+
+### 配置项目环境
 
 配置 poetry 使得虚拟环境在项目根目录下生成(`.venv`)
 
@@ -200,3 +235,20 @@ poetry shell
 # 运行 run.py
 python run.py
 ```
+
+---
+
+### invalid hashes(ubuntu)
+
+> [Invalid hashes errors on fresh install · Issue #4883 · python-poetry/poetry (github.com)](https://github.com/python-poetry/poetry/issues/4883)
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 - --uninstall
+# if the above command tells you poetry isn't installed, try this instead (poetry's previous installer has recently been deprecated):
+# curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --uninstall
+rm -r ~/.cache/pypoetry
+# if your poetry cache is somewhere else, this tells you where: poetry config --list
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+像这样重新装下 poetry 然后重新运行 `poetry install` 就好了
