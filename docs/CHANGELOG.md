@@ -1,5 +1,13 @@
 # 2022
 
+## 8.2
+
+### 每日新闻
+
+添加 [InSnocent/Daily_News: 这是一个基于HoshinoBot的每日新闻插件 (github.com)](https://github.com/InSnocent/Daily_News)
+
+---
+
 ## 7.31
 
 ### 每日番剧推送
