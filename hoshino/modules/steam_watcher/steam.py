@@ -7,23 +7,27 @@
 # 引入配置文件相关库
 import rtoml
 from pathlib import Path
+# json
+import json
 
 # 引入 hoshino 相关库
 from hoshino import Service, priv, config
 from hoshino.typing import CQEvent
 # 正则
 import re
-# json
-import json
+
 
 # 网络请求库 httpx
 import httpx
 # 时间, 用于记录警告日志
 from datetime import datetime
 
+# 用于发图
+import base64
+
 
 sv_help = """
-[steam_watcher] 监视群友steam游戏状态
+监视群友steam游戏状态 详情请输入 [steam订阅说明] 或 [帮助steam_watcher] 查阅
 """.strip()
 
 sv = Service(
@@ -107,7 +111,8 @@ async def get_game_name(id):
 
 
 # 每 1min 执行一次轮询, 更新 SteamUID - 正在玩的游戏信息 steam_uid_game_json 中的数据, 如果有变化则发送消息
-@sv.scheduled_job("cron", minute="*/1")
+# @sv.scheduled_job("cron", minute="*/1")
+@sv.scheduled_job("cron", second="*/30")
 async def steam_watch():
     print("正在更新 SteamUID - 正在玩的游戏信息")
     # 如果 steam_uid_game_json 中的项数大于 100, 则可能会触发风控, 保险起见每次轮询
@@ -163,7 +168,7 @@ async def bind_steam(bot, ev: CQEvent):
 其他说明请发送 "steam订阅说明" 来获取帮助')
 
 # steam订阅说明
-@sv.on_fullmatch("steam订阅说明")
+@sv.on_rex((r'(steam订阅说明|帮助steam_watcher)'))
 async def steam_subscribe_help(bot, ev: CQEvent):
     await bot.send(ev, "订阅Steam状态 --- [添加steam订阅 UID] ---详情请发送 [怎么绑定steam] 获取帮助 \n\
 删除订阅 --- [删除steam订阅 UID] \n\
@@ -204,6 +209,7 @@ async def add_steam(bot, ev: CQEvent):
     # 获取该用户正在玩的游戏的名称(如果没有在玩游戏则为 "没在玩游戏", 然后将其添加到 steam_uid_game_json 映射中)
     if "gameid" in response["response"]["players"][0]:
         steam_game = response["response"]["players"][0]["gameextrainfo"]
+        await bot.send(ev, f"{steam_nickname}, 正在玩: {steam_game}")
     else:
         steam_game = None
     steam_uid_game_json[steam_uid] = steam_game
@@ -238,17 +244,20 @@ async def delete_steam(bot, ev: CQEvent):
             return
     # 如果群号在 group_subscribe 中, 且订阅过该 UID, 则从 group_subscribe_json 中删除
     group_subscribe_json[str(group_id)].remove(steam_uid)
-    # 如果没有其他群订阅该 UID, 则删除 steamUID - 昵称 映射
+    # 如果没有其他群订阅该 UID, 则删除 steamUID - 正在玩的游戏 的映射
     for group in group_subscribe_json:
         if steam_uid in group_subscribe_json[group]:
             break
     else:
-        del steam_uid_nickname_json[steam_uid]
+        del steam_uid_game_json[steam_uid]
 
     # 保存到 json 文件
     with open(group_subscribe_path, "w", encoding="utf-8") as f:
         json.dump(group_subscribe_json, f, ensure_ascii=False, indent=4)
+    with open(steam_uid_game_path, "w", encoding="utf-8") as f:
+        json.dump(steam_uid_game_json, f, ensure_ascii=False, indent=4)
     await bot.send(ev, f"删除成功, UID: {steam_uid}, 昵称: {steam_uid_nickname_json[steam_uid]}")
+
 
 
 # 查看steam订阅列表
@@ -319,6 +328,20 @@ async def who_is_playing(bot, ev: CQEvent):
 @sv.on_fullmatch("steam_slcs")
 async def slcs(bot, ev: CQEvent):
     await bot.send_private_msg(user_id=ADMIN_QQID, message=f"由于没有大于100的实际用例, 这条信息仅用来测试私聊消息")
+
+# 群聊消息示例
+@sv.on_fullmatch("steam_gcs")
+async def gcs(bot, ev: CQEvent):
+    await bot.send(ev, f"群聊消息测试")
+
+# 合并转发消息测试
+@sv.on_fullmatch("steam_hf")
+async def hf(bot, ev: CQEvent):
+    img_42_path = Path(__file__).parent / "42.jpg"
+    img = open(img_42_path, "rb").read()
+    image_b64 = f"base64://{str(base64.b64encode(img).decode())}"
+    data = {"type": "node", "data": {"name": "合并转发测试", "uin": "2854196310", "content": f"[CQ:image,file={image_b64}]"}}
+    await bot.send_group_forward_msg(group_id=ev["group_id"], messages=data)
 
 # # 获取游戏在线状态
 # async def get_game_status(id_list):
