@@ -18,6 +18,7 @@ for qu in Question.select():
         answers[qu.quest] = {}
     answers[qu.quest][union(qu.rep_group, qu.rep_member)] = qu.answer
 
+# xqa_admin_list = ['1369661643']
 
 @bot.on_message('group')
 async def handle(context):
@@ -41,6 +42,7 @@ async def handle(context):
         return {'reply': '好的我记住了', 'at_sender': False}
     elif message.startswith('大家问') or message.startswith('有人问'):
         if context['sender']['role'] == 'member':
+        # if str(context['user_id']) not in xqa_admin_list:
             return {'reply': f'只有管理员才可以用“{message[:3]}”', 'at_sender': False}
         msg = message[3:].split('你答', 1)
         if len(msg) == 1:
