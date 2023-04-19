@@ -23,6 +23,7 @@ TOP_MANUAL = '''
 
 发送以下关键词查看更多：
 [帮助通用]
+[帮助娱乐]
 ========
 ※除这里中写明外 另有其他隐藏功能:)
 ※隐藏功能属于赠品 不保证可用性
@@ -44,13 +45,15 @@ def gen_bundle_manual(bundle_name, service_list, gid):
     return '\n'.join(manual)
 
 
-""" @sv.on_prefix(('help', '帮助'))
+@sv.on_prefix(('help', '帮助'))
 async def send_help(bot, ev: CQEvent):
     bundle_name = ev.message.extract_plain_text().strip()
     bundles = Service.get_bundles()
+    print(f"进入帮助函数, bundles:{bundles}")
     if not bundle_name:
+        print("无参数")
         await bot.send(ev, TOP_MANUAL)
     elif bundle_name in bundles:
         msg = gen_bundle_manual(bundle_name, bundles[bundle_name], ev.group_id)
-        await bot.send(ev, msg) """
-    # else: ignore
+        print(f"待发送信息为:{msg}")
+        await bot.send(ev, msg) 
