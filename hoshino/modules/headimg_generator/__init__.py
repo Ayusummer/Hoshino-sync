@@ -9,8 +9,7 @@ from .data_source import make_image, commands
 from .download import DownloadError, ResourceError
 from .models import UserInfo, Command
 
-sv = Service('头像表情包', help_='''
-![](https://camo.githubusercontent.com/0750718bf4b9401c65db1347c4b6084ceaa966c80047bf759dc72eb418966058/68747470733a2f2f73322e6c6f6c692e6e65742f323032322f30352f31382f4533796361676e623234696c51765a2e6a7067)
+sv = Service('头像表情包', help_='''通过图像/头像生成表情包, 详情请发送 [帮助头像表情包] 查阅
 '''.strip(), enable_on_default=True, bundle='娱乐', visible = True)
 
 @sv.on_fullmatch(("帮助头像表情包"))
