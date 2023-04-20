@@ -165,6 +165,8 @@ async def bind_steam(bot, ev: CQEvent):
 有些用户的 Steam UID 为 "https://steamcommunity.com/id/xxx" 的形式, \n\
 此时可以点击右上角头像旁边的昵称下拉菜单 -> 账户明细 \n\
 然后就可以在 XXX 的账户字样下看到你的 Steam UID 了\n\
+手机端steam同样可以在账户明细页面查看到steam UID\n\
+不管是电脑端还是手机端都可以用UU免费酵素\n\
 其他说明请发送 "steam订阅说明" 来获取帮助')
 
 # steam订阅说明
