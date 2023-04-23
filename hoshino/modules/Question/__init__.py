@@ -4,9 +4,12 @@ from nonebot import get_bot
 
 from .data import Question
 
+from hoshino import config
+
 bot = get_bot()
 answers = {}
 
+ADMIN_QQID = config.SUPERUSERS[0]
 
 def union(group_id, user_id):
     return (group_id << 32) | user_id
@@ -41,7 +44,7 @@ async def handle(context):
         ).execute()
         return {'reply': '好的我记住了', 'at_sender': False}
     elif message.startswith('大家问') or message.startswith('有人问'):
-        if context['sender']['role'] == 'member':
+        if context['sender']['role'] == 'member' and context['user_id'] != ADMIN_QQID:
         # if str(context['user_id']) not in xqa_admin_list:
             return {'reply': f'只有管理员才可以用“{message[:3]}”', 'at_sender': False}
         msg = message[3:].split('你答', 1)
