@@ -1,4 +1,5 @@
 
+# https://github.com/acheong08/EdgeGPT
 # 引入配置文件相关库
 import rtoml
 from pathlib import Path
