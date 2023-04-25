@@ -1,3 +1,4 @@
+# 暂时撤掉, 目前的写法没有做异步, 太影响性能了, 甚至当 timeout 太多时由于 30 s 一读甚至可能死锁
 # Steam Web API简易使用介绍: https://blog.imzy.ink/steamapi/
 # Steam API KEY: https://steamcommunity.com/dev/apikey
 # Steam Web API: https://developer.valvesoftware.com/wiki/Steam_Web_API
