@@ -1,0 +1,1 @@
+https://github.com/hewang1an/StarRail-plugin 还没有完成测试, 尚未部署成功, 先摸来一个角色装备推荐用用, 后续还是得用 https://github.com/hewang1an/StarRail-plugin, 作者和 Contributors 更新得很勤快
