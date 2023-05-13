@@ -6,6 +6,7 @@
 # 目前不太清楚 Steam Web API 的调用频率限制, 根据 https://partner.steamgames.com/doc/webapi_overview?l=schinese 中所述, 如果返回 403 则说明触发了频率限制
 
 # 引入配置文件相关库
+import asyncio
 import rtoml
 from pathlib import Path
 
@@ -28,6 +29,9 @@ from datetime import datetime
 
 # 用于发图
 import base64
+
+# 用于多进程
+from multiprocessing import Process
 
 
 sv_help = """
@@ -116,57 +120,64 @@ async def get_game_name(id):
         return None
 
 
+async def generate_game_message_for_uid(steam_uid: str, game_name: str):
+    """判断该玩家当前的游戏状态并生成提醒消息\n
+    Args:\n
+        steamuid (str): SteamUID\n
+        game_name (str): 当前steamuid_game_json中的游戏名称, 也即上一次查询时该用户正在玩的游戏名称\n
+    Returns:\n
+        str: 提醒消息
+    """
+    # 获取该 steam_uid 的昵称
+    steam_nickname = steam_uid_nickname_json[steam_uid]
+    # 访问 steam API 获取该 steam_uid 正在玩的游戏名称
+    game_name_now = await get_game_name(steam_uid)
+    # 如果正在玩的游戏名称与之前不同, 则更新 steam_uid_game_json 中的数据, 并发送消息
+    if game_name != game_name_now:
+        # 如果当前没有在玩游戏, 则发送 steam_nikename 不玩 game_name 了
+        if game_name_now is None:
+            # 如果 game_name 为 None, 则不发送消息
+            if game_name is None:
+                message = None
+            # 如果 game_name 不为 None, 则发送 steam_nickname 不玩 game_name 了
+            else:
+                message = f"{steam_nickname} 不玩 {game_name} 了"
+        elif game_name is None:
+            message = f"{steam_nickname} 正在玩 {game_name_now}"
+        else:
+            message = f"{steam_nickname} 不玩 {game_name} 了, 现在在玩 {game_name_now}"
+        # 遍历 group_subscribe_json 中的 group_id 与 steam_uid_list, 如果 steam_uid 在 steam_uid_list 中, 则发送消息
+        for group_id, steam_uid_list in group_subscribe_json.items():
+            if steam_uid in steam_uid_list and message is not None:
+                await sv.bot.send_group_msg(
+                    group_id=int(group_id), message=message
+                )
+        # 更新 steam_uid_game_json 中的数据
+        steam_uid_game_json[steam_uid] = game_name_now
+        # 保存 steam_uid_game_json
+        json.dump(
+            steam_uid_game_json,
+            open(steam_uid_game_path, "w", encoding="utf-8"),
+            ensure_ascii=False,
+            indent=4,
+        )
+
+
+def update_steam_watch_info():
+    sv.logger.info("正在更新 SteamUID - 正在玩的游戏信息")
+    # 遍历 steam_uid_game_json 中的 steam_uid 与 game_name
+    for steam_uid, game_name in steam_uid_game_json.items():
+        asyncio.run(generate_game_message_for_uid(steam_uid, game_name))
+        # await generate_game_message_for_uid(steam_uid, game_name)
+    sv.logger.info("更新完成")
+
 # 每 1min 执行一次轮询, 更新 SteamUID - 正在玩的游戏信息 steam_uid_game_json 中的数据, 如果有变化则发送消息
 # @sv.scheduled_job("cron", minute="*/1")
 @sv.scheduled_job("cron", second="*/30")
 async def steam_watch():
-    print("正在更新 SteamUID - 正在玩的游戏信息")
-    # 如果 steam_uid_game_json 中的项数大于 100, 则可能会触发风控, 保险起见每次轮询
-    # 遍历 steam_uid_game_json 中的 steam_uid 与 game_name
-    for steam_uid, game_name in steam_uid_game_json.items():
-        # 获取该 steam_uid 的昵称
-        steam_nickname = steam_uid_nickname_json[steam_uid]
-        # 访问 steam API 获取该 steam_uid 正在玩的游戏名称
-        game_name_now = await get_game_name(steam_uid)
-        # 如果正在玩的游戏名称与之前不同, 则更新 steam_uid_game_json 中的数据, 并发送消息
-        if game_name != game_name_now:
-            # 如果当前没有在玩游戏, 则发送 steam_nikename 不玩 game_name 了
-            if game_name_now is None:
-                # 如果 game_name 为 None, 则不发送消息
-                if game_name is None:
-                    message = None
-                # 如果 game_name 不为 None, 则发送 steam_nickname 不玩 game_name 了
-                else:
-                    print(
-                        f"当前 game_name 为 {game_name}, game_name_now 为 {game_name_now}"
-                    )
-                    message = f"{steam_nickname} 不玩 {game_name} 了"
-            # 如果当前在玩游戏,
-            else:
-                # 如果 game_name 为 None, 则发送 steam_nickname 现在在玩 game_name_now
-                if game_name is None:
-                    message = f"{steam_nickname} 正在玩 {game_name_now}"
-                # 如果 game_name 不为 None, 则发送 steam_nickname 不玩 game_name 了, 现在在玩 game_name_now
-                else:
-                    message = f"{steam_nickname} 不玩 {game_name} 了, 现在在玩 {game_name_now}"
-            # 遍历 group_subscribe_json 中的 group_id 与 steam_uid_list, 如果 steam_uid 在 steam_uid_list 中, 则发送消息
-            for group_id, steam_uid_list in group_subscribe_json.items():
-                if steam_uid in steam_uid_list:
-                    # 如果 message 为 None, 则不发送消息
-                    if message is not None:
-                        await sv.bot.send_group_msg(
-                            group_id=int(group_id), message=message
-                        )
-            # 更新 steam_uid_game_json 中的数据
-            steam_uid_game_json[steam_uid] = game_name_now
-            # 保存 steam_uid_game_json
-            json.dump(
-                steam_uid_game_json,
-                open(steam_uid_game_path, "w", encoding="utf-8"),
-                ensure_ascii=False,
-                indent=4,
-            )
-    print("更新完成")
+    p = Process(target=update_steam_watch_info)
+    p.start()
+    # await update_steam_watch_info()
 
 
 @sv.on_rex((r"(怎么|如何)(绑定steam|添加steam订阅|订阅steam)"))
