@@ -89,11 +89,11 @@ DEVICES = [
 async def mikan_poller():
     if not Mikan.rss_cache:
         await Mikan.update_cache()
-        sv.logger.info(f"订阅缓存为空，已加载至最新")
+        sv.logger.info("订阅缓存为空，已加载至最新")
         return
     new_bangumi = await Mikan.update_cache()
     if not new_bangumi:
-        sv.logger.info(f"未检索到番剧更新！")
+        sv.logger.info("未检索到番剧更新！")
     else:
         sv.logger.info(f"检索到{len(new_bangumi)}条番剧更新！")
         msg = [
