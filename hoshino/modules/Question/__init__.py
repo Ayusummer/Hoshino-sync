@@ -83,7 +83,7 @@ async def handle(context):
                 del answers[q]
             return {"reply": f"我不再回答“{a}”了", "at_sender": False}
 
-        if context["sender"]["role"] == "member":
+        if context["sender"]["role"] == "member" and context["user_id"] != ADMIN_QQID:
             return {"reply": "只有管理员可以删除别人的问题", "at_sender": False}
 
         wild = union(context["group_id"], 1)
