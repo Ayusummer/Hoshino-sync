@@ -161,6 +161,7 @@ async def generate_game_message_for_uid(steam_uid: str, game_name: str):
             ensure_ascii=False,
             indent=4,
         )
+        print("json更新完成")
 
 
 def update_steam_watch_info():
