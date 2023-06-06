@@ -6,6 +6,8 @@
  * @Description: In User Settings Edit
  * @FilePath: \HoshinoBot\README.md
 -->
+# Hoshino-Sync
+
 个人自用的魔改版 hoshino
 
 > 源仓库链接:  
@@ -252,3 +254,18 @@ curl -sSL https://install.python-poetry.org | python3 -
 ```
 
 像这样重新装下 poetry 然后重新运行 `poetry install` 就好了
+
+
+---
+
+## 致谢
+
+<p float="left"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" width="5%">  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/DataGrip_icon.png" width="5%">  </p>
+
+---
+
+
+
+
+
+
